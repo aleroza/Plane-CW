@@ -13,6 +13,13 @@ class Node:
         self.mb = math.sqrt(self.tb[0] ** 2 + self.lb[0] ** 2)
 
 
+def algorithm(nodes, x, y, v):
+    if nodes[0][0].val:
+        pass
+
+    return nodes
+
+
 def gen_rawdata(x, y):
     rawdata = []
     for row in range(y):
@@ -42,6 +49,10 @@ def gen_nodes(rawdata):
 
 
 def main():
+    # nodes = gen_nodelist(gen_graph(6,5))
+    # nodes[0][0].val=0
+    # nodes = algorithm(nodes)
+
     g = gen_rawdata(6, 5)
     for row in g:
         print(row)
