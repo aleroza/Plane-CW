@@ -56,8 +56,6 @@ def main():
     nodes[y-1][x-1].val=0
     nodes = algorithm(nodes[y-1][x-1],0)
     
-    
-  
     # for row in nodes:
         # for col in row:
             # print(f"[{col.lb} {col.tb}]", end="")
