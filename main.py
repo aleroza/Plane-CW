@@ -62,7 +62,7 @@ def print_nodes(nodes):
 
 def optimal_path(cur_node, opt_indexes, nodes):
 	print(cur_node)
-	if cur_node is None:
+	if cur_node.opt is None:
 		return opt_indexes
 	for y, path in enumerate(cur_node.opt):
 		[opt_indexes.append((noderow.index(path), y)) for noderow in nodes if path in noderow]
