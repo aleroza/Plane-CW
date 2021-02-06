@@ -14,6 +14,8 @@ class Node:
 	def calculate_mb(self):
 		self.mb = math.sqrt(self.db[0] ** 2 + self.lb[0] ** 2)
 
+	def __str__(self): return f"Нода с весом {self.val}"
+
 
 def algorithm(cur_node, v, prev_node):
 	if cur_node.val is None or cur_node.val > v:
@@ -62,10 +64,10 @@ def print_nodes(nodes):
 
 def optimal_path(cur_node, opt_indexes, nodes):
 	print(cur_node)
-	if cur_node.opt is None:
+	if cur_node.opt == [None]:
 		return opt_indexes
-	for y, path in enumerate(cur_node.opt):
-		[opt_indexes.append((noderow.index(path), y)) for noderow in nodes if path in noderow]
+	for path in cur_node.opt:
+		[opt_indexes.append((node_row.index(path), y)) for y, node_row in enumerate(nodes) if path in node_row]
 		optimal_path(path, opt_indexes, nodes)
 
 
