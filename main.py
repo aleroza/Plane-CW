@@ -18,10 +18,12 @@ class Node:
 
 
 def algorithm(cur_node, v, prev_node):
-	if cur_node.val is None or cur_node.val > v:
+	if prev_node is None:
+		cur_node.val = v
+	elif cur_node.val is None or cur_node.val > v:
 		cur_node.val = v
 		cur_node.opt = [prev_node]
-	elif cur_node.val == v:
+	elif cur_node.val == v and not cur_node.opt[0] == prev_node:
 		cur_node.opt.append(prev_node)
 	elif cur_node.val < v:
 		return
@@ -63,12 +65,12 @@ def print_nodes(nodes):
 
 
 def optimal_path(cur_node, opt_indexes, nodes):
-	print(cur_node)
 	if cur_node.opt == [None]:
-		return opt_indexes
+		return
 	for path in cur_node.opt:
 		[opt_indexes.append((node_row.index(path), y)) for y, node_row in enumerate(nodes) if path in node_row]
 		optimal_path(path, opt_indexes, nodes)
+	return opt_indexes
 
 
 def main():
@@ -88,7 +90,7 @@ def main():
 
 	opt_indexes = []
 	optimal_path(nodes[0][0], opt_indexes, nodes)
-
+	print(len(opt_indexes), opt_indexes)
 
 if __name__ == '__main__':
 	main()

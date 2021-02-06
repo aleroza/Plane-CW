@@ -1,10 +1,13 @@
 import json
 import random
+from time import sleep
+
 import matplotlib.pyplot as plt
 import networkx as nx
 import main
 import numpy as np
 from itertools import count
+
 
 # for x in range(x):
 #   for y in range(y):
@@ -21,11 +24,14 @@ from itertools import count
 # G.add_edge("n10", "n00", weight=7)
 
 def draw():
-	x, y = 7, 6
+	x, y = 5, 4
 	with open('example_data.json', 'r') as file:
-		w = np.array(json.load(file))
-	nodes = main.gen_nodes(w)
+		rawdata = np.array(json.load(file))
+
+	nodes = main.gen_nodes(rawdata)
+	main.algorithm(nodes[y - 1][x - 1], 0, None)
 	G = nx.grid_2d_graph(x, y)
+
 	pos = dict((n, n) for n in G.nodes())
 	for yy, nodes_row in enumerate(nodes):
 		for xx, node in enumerate(nodes_row):
@@ -33,10 +39,10 @@ def draw():
 				G[xx, yy][xx - 1, yy]['weight'] = node.lb[1]
 			if node.db is not None:
 				G[xx, yy][xx, yy - 1]['weight'] = node.db[1]
-	route = []
-	colors=[]
+	route = main.optimal_path(nodes[0][0], [], nodes)
+	colors = []
 	for node in G.nodes:
-		if node in [(0,0),(x-1,y-1)]:
+		if node in [(0, 0), (x - 1, y - 1)]:
 			colors.append("red")
 		elif node in route:
 			colors.append("green")
@@ -50,6 +56,10 @@ def draw():
 
 	plt.axis('off')
 	plt.show()
+
+	sleep(2)
+
+
 
 
 # x,y=7,6
