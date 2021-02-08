@@ -67,12 +67,13 @@ def draw():
 			aedges.append((node, anodes[i + 1]))
 	sleep(2)
 	plt.figure()
+	plt.axis('off')
 	D = nx.DiGraph()
-	D.add_nodes_from(G.nodes)
+	D.add_nodes_from([node for node in G.nodes if node in route])
 	D.add_edges_from(G.edges)
-	D.remove_edges_from([edge for edge in D.edges if edge not in route])
-	nx.draw_networkx(G, pos, with_labels=True, labels=labels, node_size=500, node_color=colors)
-	nx.draw_networkx_edges(G,pos, arrows=True, arrowstyle="fancy")
+	nx.draw_networkx_nodes(D, pos, route)
+	# nx.draw_networkx(D, pos, with_labels=True, labels=labels, node_size=500, node_color=colors)
+	nx.draw_networkx_edges(D,pos, arrows=True)
 	plt.show()
 
 
