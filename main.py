@@ -34,7 +34,7 @@ def algorithm(cur_node, v, prev_node):
 		algorithm(cur_node.db[0], cur_node.db[1] + v, cur_node)
 
 
-def gen_rawdata(y, x):
+def gen_rawdata(x, y):
 	return np.random.randint(1, 10, (y, x, 2), int)
 
 
@@ -57,7 +57,7 @@ def gen_nodes(rawdata):
 
 
 def print_nodes(nodes):
-	for row in nodes[::-1]:
+	for row in nodes:
 		for col in row:
 			print(f"[{col.val}]", end="")
 		print("")
@@ -72,24 +72,23 @@ def optimal_path(cur_node, opt_indexes, nodes):
 		optimal_path(path, opt_indexes, nodes)
 	return opt_indexes
 
+def prealg(nodes):
+	nodes[len(nodes) - 1][len(nodes[0]) - 1].val = 0
+	algorithm(nodes[len(nodes) - 1][len(nodes[0]) - 1], 0, None)
 
 def main():
 	x, y = 5, 4
-	rawdata = gen_rawdata(y, x)
+	rawdata = gen_rawdata(x, y)
 
-	with open('example_data.json', 'r') as file:
+	with open('jenya.json', 'r') as file:
 		rawdata = json.load(file)
+
 	nodes = gen_nodes(rawdata)
-	nodes[y - 1][x - 1].val = 0
+	prealg(nodes)
 
 	print_nodes(nodes)
 
-	algorithm(nodes[y - 1][x - 1], 0, None)
-
-	print_nodes(nodes)
-
-	opt_indexes = []
-	optimal_path(nodes[0][0], opt_indexes, nodes)
+	opt_indexes = optimal_path(nodes[0][0], [], nodes)
 	print(len(opt_indexes), opt_indexes)
 
 if __name__ == '__main__':

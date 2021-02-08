@@ -24,6 +24,7 @@ from itertools import count
 # G.add_edge("n10", "n00", weight=7)
 
 def draw():
+	plt.figure()
 	x, y = 5, 4
 	with open('example_data.json', 'r') as file:
 		rawdata = np.array(json.load(file))
@@ -51,15 +52,28 @@ def draw():
 
 	weights = nx.get_edge_attributes(G, "weight")
 	labels = dict(((i, j), f"{i},{j}") for i, j in G.nodes())
-	nx.draw_networkx(G, pos, with_labels=True, labels=labels, node_size=500, node_color=colors)
+	# weight_labels = dict(((i, j), f"{i},{j}") for i, j in G.nodes())
+	nx.draw_networkx(G, pos, with_labels=True, labels=labels, node_size=500)
 	nx.draw_networkx_edge_labels(G, pos, edge_labels=weights)
 
 	plt.axis('off')
-	plt.show()
 
+	anodes = [(xx, yy) for xx in range(x) for yy in range(y)]
+	aedges = []
+	for i, node in enumerate(anodes):
+		if i + y <= len(anodes) - 1:
+			aedges.append((node, anodes[i + y]))
+		if i + 1 <= len(anodes) - 1 and node[0] == anodes[i + 1][0]:
+			aedges.append((node, anodes[i + 1]))
 	sleep(2)
-
-
+	plt.figure()
+	D = nx.DiGraph()
+	D.add_nodes_from(G.nodes)
+	D.add_edges_from(G.edges)
+	D.remove_edges_from([edge for edge in D.edges if edge not in route])
+	nx.draw_networkx(G, pos, with_labels=True, labels=labels, node_size=500, node_color=colors)
+	nx.draw_networkx_edges(G,pos, arrows=True, arrowstyle="fancy")
+	plt.show()
 
 
 # x,y=7,6
