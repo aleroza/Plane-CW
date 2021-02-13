@@ -39,3 +39,69 @@ def draw():
 
 if __name__ == '__main__':
 	draw()
+
+	anodes = [(xx, yy) for xx in range(x) for yy in range(y)]
+	aedges = []
+	for i, node in enumerate(anodes):
+		if i + y <= len(anodes) - 1:
+			aedges.append((node, anodes[i + y]))
+		if i + 1 <= len(anodes) - 1 and node[0] == anodes[i + 1][0]:
+			aedges.append((node, anodes[i + 1]))
+
+
+			# for x in range(x):
+			#   for y in range(y):
+			#
+
+			# G.add_node("n00", weight=9)
+			# G.add_node("n01", weight=3)
+			# G.add_node("n10", weight=4)
+			# G.add_node("n11", weight=0)
+
+			# G.add_edge("n11", "n01", weight=3)
+			# G.add_edge("n11", "n10", weight=4)
+			# G.add_edge("n01", "n00", weight=6)
+			# G.add_edge("n10", "n00", weight=7)
+			def graph(x, y, nodes):
+				plt.figure("Условие")
+				plt.axis('off')
+				G = nx.grid_2d_graph(x, y)
+
+				pos = dict((n, n) for n in G.nodes())
+				for yy, nodes_row in enumerate(nodes):
+					for xx, node in enumerate(nodes_row):
+						if node.lb is not None:
+							G[xx, yy][xx - 1, yy]['weight'] = node.lb[1]
+						if node.db is not None:
+							G[xx, yy][xx, yy - 1]['weight'] = node.db[1]
+				route = main.optimal_path(nodes[0][0], [], nodes)
+				fst_colors = []
+				for node in G.nodes:
+					if node in [(0, 0), (x - 1, y - 1)]:
+						fst_colors.append("red")
+					else:
+						fst_colors.append("teal")
+				colors = []
+				for node in G.nodes:
+					if node in [(0, 0), (x - 1, y - 1)]:
+						colors.append("red")
+					elif node in route:
+						colors.append("green")
+					else:
+						colors.append("gray")
+				weights = nx.get_edge_attributes(G, "weight")
+				labels = dict(((i, j), f"{i},{j}") for i, j in G.nodes())
+				weight_labels = dict(((i, j), f"{nodes[j][i].val}") for i, j in G.nodes())
+
+				nx.draw_networkx(G, pos, with_labels=True, labels=labels, node_size=500, node_color=fst_colors,
+				                 node_shape="s")
+				nx.draw_networkx_edge_labels(G, pos, edge_labels=weights)
+
+				plt.figure("Решение")
+				plt.axis('off')
+				D = nx.grid_2d_graph(x, y)
+				nx.draw_networkx_nodes(D, pos, route)
+				nx.draw_networkx(D, pos, with_labels=True, labels=weight_labels, node_size=500, node_color=colors,
+				                 node_shape="s")
+				nx.draw_networkx_edge_labels(D, pos, edge_labels=weights)
+				plt.show()

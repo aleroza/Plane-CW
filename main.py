@@ -72,16 +72,18 @@ def optimal_path(cur_node, opt_indexes, nodes):
 		optimal_path(path, opt_indexes, nodes)
 	return opt_indexes
 
+
 def prealg(nodes):
 	nodes[len(nodes) - 1][len(nodes[0]) - 1].val = 0
 	algorithm(nodes[len(nodes) - 1][len(nodes[0]) - 1], 0, None)
+
 
 def main():
 	x, y = 5, 4
 	rawdata = gen_rawdata(x, y)
 
-	with open('jenya.json', 'r') as file:
-		rawdata = json.load(file)
+	# with open('example_data.json', 'r') as file:
+	# 	rawdata = json.load(file)
 
 	nodes = gen_nodes(rawdata)
 	prealg(nodes)
@@ -90,6 +92,7 @@ def main():
 
 	opt_indexes = optimal_path(nodes[0][0], [], nodes)
 	print(len(opt_indexes), opt_indexes)
+
 
 if __name__ == '__main__':
 	main()
